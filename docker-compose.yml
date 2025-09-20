@@ -1,0 +1,52 @@
+version: "3.9"
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Placeholder worker service (will be wired later)
+  worker:
+    build:
+      context: ./backend/workers
+    command: ["node", "dist/index.js"]
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - API_URL=http://backend:8000
+    depends_on:
+      redis:
+        condition: service_healthy
+    profiles: ["workers"]
+
+  # Backend (FastAPI) placeholder (wired later)
+  backend:
+    build:
+      context: ./backend
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE=${SUPABASE_SERVICE_ROLE}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - APP_URL=${APP_URL:-http://localhost:3000}
+    depends_on:
+      redis:
+        condition: service_healthy
+    profiles: ["backend"]
+
+networks:
+  default:
+    name: mybrand-net
+
+

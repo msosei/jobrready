@@ -1,0 +1,55 @@
+{
+  "plans": {
+    "free": {
+      "id": "price_free",
+      "name": "Free",
+      "price": 0,
+      "interval": "month",
+      "features": {
+        "applications": 5,
+        "cover_letters": 5,
+        "ai_requests": 20,
+        "tailor_application": true,
+        "mock_interview": true,
+        "gap_narratives": false,
+        "portfolio_projects": false,
+        "personal_website": false,
+        "bulk_apply": false
+      }
+    },
+    "pro": {
+      "id": "price_pro",
+      "name": "Pro",
+      "price": 2900,
+      "interval": "month",
+      "features": {
+        "applications": 50,
+        "cover_letters": 50,
+        "ai_requests": 200,
+        "tailor_application": true,
+        "mock_interview": true,
+        "gap_narratives": true,
+        "portfolio_projects": true,
+        "personal_website": true,
+        "bulk_apply": false
+      }
+    },
+    "premium": {
+      "id": "price_premium",
+      "name": "Premium",
+      "price": 9900,
+      "interval": "month",
+      "features": {
+        "applications": -1,
+        "cover_letters": -1,
+        "ai_requests": -1,
+        "tailor_application": true,
+        "mock_interview": true,
+        "gap_narratives": true,
+        "portfolio_projects": true,
+        "personal_website": true,
+        "bulk_apply": true
+      }
+    }
+  }
+}

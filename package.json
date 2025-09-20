@@ -1,0 +1,16 @@
+{
+  "name": "job-ready",
+  "version": "1.0.0",
+  "description": "Developer-ready scaffold for a full-stack job-application platform inspired by modern job tools. Includes Next.js frontend, FastAPI backend, Redis/BullMQ workers, AI microservices, and a Chrome Extension (MV3), with Supabase (Postgres, Auth, Storage) and Stripe billing integration.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

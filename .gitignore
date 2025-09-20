@@ -1,0 +1,35 @@
+# Node
+node_modules/
+.next/
+dist/
+coverage/
+*.log
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
+
+# Env
+.env
+config/.env
+.env.local
+.env.*.local
+
+# MacOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+
+# Build artifacts
+build/
+frontend/.turbo/
+
+# Chrome Extension
+chrome_extension/build/
+
+
