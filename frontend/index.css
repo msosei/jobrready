@@ -1,9 +1,36 @@
-@import "tailwindcss";
+/*
+ * Main Stylesheet for MyBrand Job Application Platform
+ * 
+ * This file serves as the central styling configuration for the entire frontend application.
+ * It leverages Tailwind CSS for utility-first styling and includes custom configurations
+ * for theming, animations, and responsive design patterns.
+ * 
+ * The stylesheet is organized in a logical flow:
+ * 1. Base imports and configurations
+ * 2. Theme variable definitions for light/dark modes
+ * 3. Custom utility definitions
+ * 4. Base styling layers
+ */
 
+/* 
+ * Import core styling libraries:
+ * - tailwindcss: Provides the utility-first CSS framework
+ * - tw-animate-css: Adds animation utilities for enhanced UI interactions
+ */
+@import "tailwindcss";
 @import "tw-animate-css";
 
+/*
+ * Define custom dark mode variant for seamless theme switching.
+ * This allows components to automatically adapt their appearance
+ * based on the application's theme context.
+ */
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Custom container utility that provides responsive padding and margin.
+ * Automatically adjusts padding based on screen size for optimal content spacing.
+ */
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;
@@ -13,6 +40,19 @@
   }
 }
 
+/*
+ * Light theme color palette definitions.
+ * Uses OKLCH color space for better accessibility and consistent lightness perception.
+ * Each variable represents a specific UI element or state:
+ * - background/foreground: Base application colors
+ * - card/popover: Component-specific backgrounds
+ * - primary/secondary: Action and emphasis colors
+ * - muted/accent: Subtle and highlighted elements
+ * - destructive: Error and warning states
+ * - border/input/ring: UI boundary and focus states
+ * - chart: Data visualization colors
+ * - sidebar: Navigation component colors
+ */
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -48,6 +88,11 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/*
+ * Dark theme color palette definitions.
+ * Provides inverted color values for improved readability in low-light environments.
+ * Maintains consistent semantic meaning while adapting to user preference.
+ */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -82,11 +127,17 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+/*
+ * Theme radius definitions for consistent corner styling.
+ * Provides a scalable system for border-radius that maintains visual harmony.
+ */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Map all color variables to theme properties for easy access */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -120,6 +171,11 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/*
+ * Base styling layer that applies global styles to all elements.
+ * Ensures consistent border and outline behavior across the application.
+ * Sets default background and text colors based on theme variables.
+ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -127,4 +183,159 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/*
+ * Custom 3D animations and transitions
+ * Provides smooth animations for 3D components and interactive elements
+ */
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+  
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  
+  .translate-z-0 {
+    transform: translateZ(0);
+  }
+  
+  .translate-z-10 {
+    transform: translateZ(10px);
+  }
+  
+  .translate-z-20 {
+    transform: translateZ(20px);
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+}
+
+/*
+ * Responsive design improvements
+ * Enhanced breakpoints and grid systems for better mobile experience
+ */
+@layer utilities {
+  .grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .grid-responsive-sm {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  .grid-responsive-lg {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/*
+ * Animation keyframes for 3D effects
+ */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+@keyframes pulse-3d {
+  0% {
+    transform: scale(1) translateZ(0);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  50% {
+    transform: scale(1.02) translateZ(10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  100% {
+    transform: scale(1) translateZ(0);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+}
+
+@keyframes tilt {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: rotateX(5deg) rotateY(5deg);
+  }
+  50% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  75% {
+    transform: rotateX(-5deg) rotateY(-5deg);
+  }
+  100% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+}
+
+/*
+ * Animation classes for 3D effects
+ */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-3d {
+  animation: pulse-3d 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-tilt {
+  animation: tilt 10s infinite linear;
+}
+
+/*
+ * Smooth transitions for interactive elements
+ */
+.transition-all-300 {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-transform-300 {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-shadow-300 {
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * Enhanced focus states for accessibility
+ */
+.focus-ring-3d {
+  @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+}
+
+.focus-ring-3d-primary {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
 }

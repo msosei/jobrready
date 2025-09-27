@@ -1,35 +1,124 @@
+/**
+ * Error Boundary Component for MyBrand Job Application Platform
+ * 
+ * This component provides error boundary functionality to catch JavaScript
+ * errors in child components and display a fallback UI instead of crashing
+ * the entire application.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React component and utility imports
+// ============================================================================
+
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+// ============================================================================
+// COMPONENT PROPS AND STATE INTERFACES
+// TypeScript interfaces for component properties and state
+// ============================================================================
+
+/**
+ * Error boundary component props interface
+ * 
+ * Defines the properties for the error boundary component
+ */
 interface Props {
+  /** Child components to wrap with error boundary */
   children: ReactNode;
+  
+  /** Optional fallback UI to display when an error occurs */
   fallback?: ReactNode;
 }
 
+/**
+ * Error boundary component state interface
+ * 
+ * Defines the state for the error boundary component
+ */
 interface State {
+  /** Whether an error has been caught */
   hasError: boolean;
+  
+  /** The error that was caught, if any */
   error?: Error;
 }
 
+// ============================================================================
+// COMPONENT IMPLEMENTATION
+// Main component class with comprehensive documentation
+// ============================================================================
+
+/**
+ * Error boundary component for catching and handling component errors
+ * 
+ * This component implements React's error boundary functionality to catch
+ * JavaScript errors in child components, log them, and display a fallback UI
+ * instead of letting the entire application crash.
+ * 
+ * @example
+ * ```tsx
+ * <ErrorBoundary>
+ *   <MyComponent />
+ * </ErrorBoundary>
+ * ```
+ */
 export class ErrorBoundary extends Component<Props, State> {
+  /**
+   * Initial component state
+   * 
+   * Sets the initial state with no error caught
+   */
   public state: State = {
     hasError: false,
   };
 
+  /**
+   * Static method to update state when an error is caught
+   * 
+   * This lifecycle method is called when an error is thrown in any child component
+   * 
+   * @param error - The error that was thrown
+   * @returns New state with error information
+   */
   public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
+  /**
+   * Lifecycle method called after an error is caught
+   * 
+   * This method is called after an error is caught and logged for debugging purposes
+   * 
+   * @param error - The error that was thrown
+   * @param errorInfo - Information about the error and component stack
+   */
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
   }
 
+  /**
+   * Handle retry action to reset the error boundary
+   * 
+   * Resets the error state to allow the component tree to re-render
+   */
   private handleRetry = () => {
     this.setState({ hasError: false, error: undefined });
   };
 
+  /**
+   * Render the error boundary component
+   * 
+   * Returns either the fallback UI when an error has occurred or the child components
+   * 
+   * @returns JSX element representing the error boundary or its children
+   */
   public render() {
     if (this.state.hasError) {
       if (this.props.fallback) {

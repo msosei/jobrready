@@ -1,0 +1,157 @@
+{
+  "tests": [
+    {
+      "name": "Voice Agent Health Check",
+      "service": "voice_agent",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Voice Command Processing",
+      "service": "voice_agent",
+      "endpoint": "/process-command",
+      "method": "POST",
+      "data": {
+        "command": "help me apply for a software engineering job",
+        "user_id": "test_user_123",
+        "context": "currently on job search page"
+      },
+      "expectedStatus": 200
+    },
+    {
+      "name": "Skill Gap Analyzer Health Check",
+      "service": "skill_gap_analyzer",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Skill Gap Analysis",
+      "service": "skill_gap_analyzer",
+      "endpoint": "/analyze",
+      "method": "POST",
+      "data": {
+        "resume_text": "Experienced Python developer with Django and Flask experience. Skilled in SQL and Docker.",
+        "job_description": "Senior Python Developer needed with experience in Django, Flask, SQL, Docker, and Kubernetes."
+      },
+      "expectedStatus": 200
+    },
+    {
+      "name": "Resume Builder Health Check",
+      "service": "resume_builder",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Resume Enhancer Health Check",
+      "service": "resume_enhancer",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Interview Coach Health Check",
+      "service": "interview_coach",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Application Filler Health Check",
+      "service": "application_filler",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Semantic Matcher Health Check",
+      "service": "semantic_matcher",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Job Recommender Health Check",
+      "service": "job_recommender",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Mock Interviewer Health Check",
+      "service": "mock_interviewer",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Diversity Insights Health Check",
+      "service": "diversity_insights",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Document Summarizer Health Check",
+      "service": "document_summarizer",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Multi Language Health Check",
+      "service": "multi_language",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    },
+    {
+      "name": "Course Recommender Health Check",
+      "service": "course_recommender",
+      "endpoint": "/health",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      }
+    }
+  ]
+}

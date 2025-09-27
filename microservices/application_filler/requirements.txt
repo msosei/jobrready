@@ -1,0 +1,14 @@
+# Python dependencies for the Job Application Auto-Fill Microservice
+# These are the minimal requirements needed to run the FastAPI application
+
+# FastAPI framework for building the REST API
+# Provides async support, automatic OpenAPI documentation, and request validation
+fastapi>=0.116.1
+
+# Pydantic for data validation and settings management
+# Used for defining request/response models and validating data
+pydantic>=2.11.7
+
+# Uvicorn ASGI server for running the FastAPI application
+# Provides the production-ready server for the application
+uvicorn>=0.35.0

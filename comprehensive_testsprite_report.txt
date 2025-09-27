@@ -1,0 +1,32 @@
+
+============================================================
+COMPREHENSIVE TESTSPRITE TEST REPORT
+============================================================
+Total Tests: 16
+Passed: 15
+Failed: 0
+Errors: 1
+Success Rate: 93.8%
+Total Duration: 0.20s
+============================================================
+
+DETAILED RESULTS:
+----------------------------------------
+✓ voice_agent Health Check: PASS (0.01s)
+✓ skill_gap_analyzer Health Check: PASS (0.00s)
+✓ resume_builder Health Check: PASS (0.00s)
+✓ resume_enhancer Health Check: PASS (0.00s)
+✓ interview_coach Health Check: PASS (0.00s)
+✓ application_filler Health Check: PASS (0.00s)
+⚠ semantic_matcher Health Check: ERROR (0.00s)
+    Message: Exception: HTTPConnectionPool(host='localhost', port=8110): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x105d017b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+✓ job_recommender Health Check: PASS (0.01s)
+✓ mock_interviewer Health Check: PASS (0.01s)
+✓ diversity_insights Health Check: PASS (0.01s)
+✓ document_summarizer Health Check: PASS (0.01s)
+✓ multi_language Health Check: PASS (0.01s)
+✓ course_recommender Health Check: PASS (0.10s)
+✓ Voice Agent /process-command: PASS (0.02s)
+✓ Skill Gap Analyzer /analyze: PASS (0.01s)
+✓ Resume Builder /generate: PASS (0.01s)
+============================================================

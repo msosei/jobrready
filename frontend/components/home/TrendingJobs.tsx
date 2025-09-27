@@ -1,9 +1,111 @@
+/**
+ * Trending Jobs Component for MyBrand Job Application Platform
+ * 
+ * This component displays trending job categories and latest job opportunities
+ * to help users discover in-demand roles and career paths.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React component and utility imports
+// ============================================================================
+
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, MapPin, DollarSign } from 'lucide-react';
 
+// ============================================================================
+// DATA INTERFACES
+// TypeScript interfaces for data structures
+// ============================================================================
+
+/**
+ * Job category data interface
+ * 
+ * Represents a job category with growth statistics
+ */
+interface JobCategory {
+  /** Category name */
+  name: string;
+  
+  /** Growth percentage */
+  growth: string;
+  
+  /** Number of jobs available */
+  jobs: number;
+}
+
+/**
+ * Trending job data interface
+ * 
+ * Represents a trending job opportunity
+ */
+interface TrendingJob {
+  /** Job title */
+  title: string;
+  
+  /** Company name */
+  company: string;
+  
+  /** Job location */
+  location: string;
+  
+  /** Salary range */
+  salary: string;
+  
+  /** Employment type */
+  type: string;
+  
+  /** Whether the job offers remote work */
+  remote: boolean;
+  
+  /** Whether the job is marked as urgent */
+  urgent: boolean;
+}
+
+// ============================================================================
+// COMPONENT PROPS INTERFACE
+// TypeScript interface for component properties
+// ============================================================================
+
+/**
+ * Trending jobs component props interface
+ * 
+ * Defines the properties for the trending jobs component
+ */
+interface TrendingJobsProps {}
+
+// ============================================================================
+// COMPONENT IMPLEMENTATION
+// Main component function with comprehensive documentation
+// ============================================================================
+
+/**
+ * Trending jobs component for the home page
+ * 
+ * This component displays trending job categories and latest job opportunities
+ * to help users discover in-demand roles and career paths. It shows both
+ * popular categories with growth statistics and individual job listings.
+ * 
+ * @param props - Component properties
+ * @returns JSX element representing the trending jobs section
+ * 
+ * @example
+ * ```tsx
+ * <TrendingJobs />
+ * ```
+ */
 export default function TrendingJobs() {
-  const categories = [
+  // ============================================================================
+  // MOCK DATA
+  // Sample data for demonstration purposes
+  // ============================================================================
+
+  /** Sample job categories data */
+  const categories: JobCategory[] = [
     { name: 'Software Engineering', growth: '+15%', jobs: 1234 },
     { name: 'Data Science', growth: '+22%', jobs: 856 },
     { name: 'Product Management', growth: '+18%', jobs: 432 },
@@ -12,7 +114,8 @@ export default function TrendingJobs() {
     { name: 'Marketing', growth: '+8%', jobs: 567 },
   ];
 
-  const trendingJobs = [
+  /** Sample trending jobs data */
+  const trendingJobs: TrendingJob[] = [
     {
       title: 'Senior Full Stack Developer',
       company: 'TechCorp',
@@ -42,6 +145,16 @@ export default function TrendingJobs() {
     },
   ];
 
+  // ============================================================================
+  // MAIN RENDER
+  // Primary component render function
+  // ============================================================================
+
+  /**
+   * Render the trending jobs component
+   * 
+   * Returns the complete trending jobs section UI with categories and job listings
+   */
   return (
     <section className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-12">

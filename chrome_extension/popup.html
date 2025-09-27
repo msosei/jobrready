@@ -1,24 +1,48 @@
 <!doctype html>
+<!-- 
+  Chrome Extension Popup for MyBrand Job Application Platform
+  Version: 1.0
+  Purpose: Provide a popup interface for configuring the Chrome extension
+-->
 <html>
+  <!-- Document head containing metadata, title, and styles -->
   <head>
+    <!-- Character encoding declaration for proper text rendering -->
     <meta charset="utf-8" />
+    <!-- Viewport meta tag for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Page title that appears in the extension popup -->
     <title>MyBrand</title>
+    
+    <!-- Inline styles for the popup interface -->
     <style>
+      /* Base body styling with font, padding, and minimum width */
       body{font-family:ui-sans-serif,system-ui;padding:12px;min-width:260px}
+      /* Button styling with brand color and rounded corners */
       button{background:#4F46E5;color:#fff;border:none;border-radius:6px;padding:8px 12px}
+      /* Input field styling with full width and rounded borders */
       input{width:100%;padding:6px 8px;margin:6px 0;border-radius:6px;border:1px solid #ddd}
+      /* Small text styling for status information */
       small{color:#666}
     </style>
   </head>
+  
+  <!-- Document body containing the popup interface elements -->
   <body>
+    <!-- Extension title -->
     <h3>MyBrand</h3>
+    
+    <!-- API URL configuration section -->
     <label>API URL</label>
+    <!-- Input field for configuring the API endpoint -->
     <input id="apiUrl" placeholder="http://localhost:8000" />
+    <!-- Save button to persist configuration changes -->
     <button id="save">Save</button>
+    
+    <!-- Status display area -->
     <p><small>Status: <span id="status">Idle</span></small></p>
+    
+    <!-- Script to handle popup functionality -->
     <script src="popup.js"></script>
   </body>
-  </html>
-
-
+</html>

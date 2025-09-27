@@ -1,14 +1,66 @@
+/**
+ * Job Card Component for MyBrand Job Application Platform
+ * 
+ * This component displays a compact job listing card with essential information
+ * including title, company, location, salary, and key tags.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React component and utility imports
+// ============================================================================
+
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { MapPin, DollarSign, Clock, Bookmark } from 'lucide-react';
-import type { Job } from '~backend/jobs/search';
+import type { Job } from '@/src/api/client';
 
+// ============================================================================
+// COMPONENT PROPS INTERFACE
+// TypeScript interface for component properties
+// ============================================================================
+
+/**
+ * Job card component props interface
+ * 
+ * Defines the properties required to display a job card
+ */
 interface JobCardProps {
+  /** Job data to display in the card */
   job: Job;
 }
 
+// ============================================================================
+// COMPONENT IMPLEMENTATION
+// Main component function with comprehensive documentation
+// ============================================================================
+
+/**
+ * Job card component for displaying job listings
+ * 
+ * This component renders a compact job listing card with essential information
+ * including job title, company, location, salary, and key tags. It also includes
+ * action buttons for applying to the job and saving it for later.
+ * 
+ * @param props - Component properties
+ * @param props.job - Job data to display in the card
+ * @returns JSX element representing the job card
+ * 
+ * @example
+ * ```tsx
+ * <JobCard job={jobData} />
+ * ```
+ */
 export default function JobCard({ job }: JobCardProps) {
+  /**
+   * Render the job card component
+   * 
+   * Returns a card component with job information and action buttons
+   */
   return (
     <Card className="hover:shadow-lg transition-shadow h-full" role="article" tabIndex={0}>
       <CardHeader className="pb-3">

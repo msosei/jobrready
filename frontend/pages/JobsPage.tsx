@@ -1,3 +1,18 @@
+/**
+ * Jobs Page for MyBrand Job Application Platform
+ * 
+ * This page provides comprehensive job search functionality with advanced
+ * filtering, pagination, and job details viewing capabilities.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React, component, hook, and utility imports
+// ============================================================================
+
 import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,31 +29,97 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
 import SEOHead from '../components/seo/SEOHead';
-import type { Job } from '~backend/jobs/search';
+import type { Job } from '@/src/api/client';
 
+// ============================================================================
+// PAGE COMPONENT
+// Main page component implementation
+// ============================================================================
+
+/**
+ * Jobs page component for job searching and browsing
+ * 
+ * This component provides a comprehensive job search interface with:
+ * - Search by keyword and location
+ * - Advanced filtering options
+ * - Pagination and infinite loading
+ * - Job details modal
+ * - Responsive design for all devices
+ * 
+ * @returns JSX element representing the jobs page
+ * 
+ * @example
+ * ```tsx
+ * <JobsPage />
+ * ```
+ */
 export default function JobsPage() {
+  // ============================================================================
+  // STATE MANAGEMENT
+  // Component state for search parameters, filters, and UI state
+  // ============================================================================
+
+  /** Search keyword for job titles, descriptions, and companies */
   const [searchKeyword, setSearchKeyword] = useState('');
+  
+  /** Search location for job locations */
   const [searchLocation, setSearchLocation] = useState('');
+  
+  /** Selected job type filter (Full-time, Part-time, etc.) */
   const [selectedJobType, setSelectedJobType] = useState('');
+  
+  /** Selected experience level filter */
   const [selectedExperience, setSelectedExperience] = useState('');
+  
+  /** Selected salary range filter */
   const [selectedSalary, setSelectedSalary] = useState('');
+  
+  /** Selected company filter */
   const [selectedCompany, setSelectedCompany] = useState('');
+  
+  /** Selected date posted filter */
   const [selectedDatePosted, setSelectedDatePosted] = useState('');
+  
+  /** Mobile filters panel open state */
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  
+  /** Currently selected job for detailed view */
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  
+  /** Current pagination page */
   const [page, setPage] = useState(0);
 
-  // Debounce search inputs
+  // ============================================================================
+  // HOOKS AND DATA FETCHING
+  // Custom hooks for search functionality and data management
+  // ============================================================================
+
+  /**
+   * Debounce search inputs to prevent excessive API calls
+   * 
+   * Delays the execution of search queries until the user has stopped typing
+   * for a specified period, improving performance and user experience.
+   */
   const debouncedKeyword = useDebounce(searchKeyword, 500);
   const debouncedLocation = useDebounce(searchLocation, 500);
   const debouncedCompany = useDebounce(selectedCompany, 500);
 
-  // Reset page when search parameters change
+  /**
+   * Reset pagination when search parameters change
+   * 
+   * Ensures that when users modify search criteria, they see the first page
+   * of results for the new search rather than continuing from a previous page.
+   */
   useEffect(() => {
     setPage(0);
   }, [debouncedKeyword, debouncedLocation, selectedJobType, selectedExperience, selectedSalary, debouncedCompany, selectedDatePosted]);
 
-  // Build search parameters
+  /**
+   * Build search parameters for the job search API
+   * 
+   * Constructs the search parameters object from component state,
+   * using debounced values to prevent excessive API calls.
+   */
   const searchParams = useMemo(() => ({
     keyword: debouncedKeyword || undefined,
     location: debouncedLocation || undefined,
@@ -60,8 +141,23 @@ export default function JobsPage() {
     page
   ]);
 
+  /**
+   * Fetch job search results using the useJobSearch hook
+   * 
+   * Handles data fetching, loading states, and error handling for job searches.
+   */
   const { data, isLoading, error, refetch } = useJobSearch(searchParams);
 
+  // ============================================================================
+  // FILTER MANAGEMENT
+  // Functions for managing active filters and filter state
+  // ============================================================================
+
+  /**
+   * Compute active filters for display
+   * 
+   * Creates an array of currently active filters for display to the user.
+   */
   const activeFilters = useMemo(() => {
     const filters = [];
     if (selectedJobType) filters.push({ type: 'jobType', value: selectedJobType, label: selectedJobType });
@@ -72,6 +168,13 @@ export default function JobsPage() {
     return filters;
   }, [selectedJobType, selectedExperience, selectedSalary, debouncedCompany, selectedDatePosted]);
 
+  /**
+   * Clear a specific filter by type
+   * 
+   * Resets the state for a specific filter type to its default value.
+   * 
+   * @param type - The type of filter to clear
+   */
   const clearFilter = (type: string) => {
     switch (type) {
       case 'jobType':
@@ -92,6 +195,11 @@ export default function JobsPage() {
     }
   };
 
+  /**
+   * Clear all active filters
+   * 
+   * Resets all filter states to their default values.
+   */
   const clearAllFilters = () => {
     setSelectedJobType('');
     setSelectedExperience('');
@@ -100,15 +208,45 @@ export default function JobsPage() {
     setSelectedDatePosted('');
   };
 
+  // ============================================================================
+  // EVENT HANDLERS
+  // Functions for handling user interactions and events
+  // ============================================================================
+
+  /**
+   * Handle search form submission
+   * 
+   * Prevents default form submission and resets pagination to first page.
+   * 
+   * @param e - Form submission event
+   */
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(0);
   };
 
+  /**
+   * Handle load more button click
+   * 
+   * Increments the pagination page to load more results.
+   */
   const handleLoadMore = () => {
     setPage(prev => prev + 1);
   };
 
+  // ============================================================================
+  // UTILITY FUNCTIONS
+  // Helper functions for data transformation and formatting
+  // ============================================================================
+
+  /**
+   * Get human-readable label for date filter values
+   * 
+   * Converts date filter codes to user-friendly labels.
+   * 
+   * @param value - Date filter value code
+   * @returns Human-readable date label
+   */
   function getDateLabel(value: string) {
     switch (value) {
       case '24h': return 'Last 24 hours';
@@ -119,6 +257,16 @@ export default function JobsPage() {
     }
   }
 
+  // ============================================================================
+  // COMPONENT RENDERING
+  // Sub-components and rendering functions
+  // ============================================================================
+
+  /**
+   * Filter content component
+   * 
+   * Renders the filter options UI for both desktop sidebar and mobile sheet.
+   */
   const FilterContent = () => (
     <div className="space-y-6">
       <div>
@@ -199,6 +347,16 @@ export default function JobsPage() {
     </div>
   );
 
+  // ============================================================================
+  // MAIN RENDER
+  // Primary component render function
+  // ============================================================================
+
+  /**
+   * Render the jobs page
+   * 
+   * Returns the complete jobs page UI with search, filters, results, and modals.
+   */
   return (
     <ErrorBoundary>
       <SEOHead

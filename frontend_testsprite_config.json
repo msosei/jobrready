@@ -1,0 +1,25 @@
+{
+  "tests": [
+    {
+      "name": "Frontend Health Check",
+      "service": "frontend",
+      "endpoint": "/",
+      "method": "GET",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Frontend Static Assets",
+      "service": "frontend",
+      "endpoint": "/index.html",
+      "method": "GET",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Frontend CSS Assets",
+      "service": "frontend",
+      "endpoint": "/index.css",
+      "method": "GET",
+      "expectedStatus": 200
+    }
+  ]
+}

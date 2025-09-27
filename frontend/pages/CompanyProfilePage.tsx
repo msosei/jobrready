@@ -1,3 +1,19 @@
+/**
+ * Company Profile Page for MyBrand Job Application Platform
+ * 
+ * This page displays detailed information about a company including its profile,
+ * job openings, culture, and benefits to help candidates learn more about
+ * potential employers.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React component and utility imports
+// ============================================================================
+
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -5,12 +21,105 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Building2, MapPin, Users, Globe, Star } from 'lucide-react';
 import JobCard from '../components/jobs/JobCard';
+import { ErrorBoundary } from '../components/common/ErrorBoundary';
+import SEOHead from '../components/seo/SEOHead';
+import type { Job } from '@/src/api/client';
 
+// ============================================================================
+// DATA INTERFACES
+// TypeScript interfaces for data structures
+// ============================================================================
+
+/**
+ * Company data interface
+ * 
+ * Represents detailed information about a company
+ */
+interface Company {
+  /** Unique identifier for the company */
+  id: string | undefined;
+  
+  /** Company name */
+  name: string;
+  
+  /** Company logo URL */
+  logo: string;
+  
+  /** Company banner image URL */
+  banner: string;
+  
+  /** Industry the company operates in */
+  industry: string;
+  
+  /** Company size */
+  size: string;
+  
+  /** Company location */
+  location: string;
+  
+  /** Company website URL */
+  website: string;
+  
+  /** Company rating */
+  rating: number;
+  
+  /** Number of reviews */
+  reviewCount: number;
+  
+  /** Year the company was founded */
+  founded: number;
+  
+  /** Company description */
+  description: string;
+  
+  /** Company mission statement */
+  mission: string;
+  
+  /** Company core values */
+  values: string[];
+  
+  /** Company benefits */
+  benefits: string[];
+  
+  /** Open job positions */
+  openJobs: Job[];
+}
+
+// ============================================================================
+// PAGE COMPONENT
+// Main page component implementation
+// ============================================================================
+
+/**
+ * Company profile page component for displaying company information
+ * 
+ * This component displays detailed information about a company including its
+ * profile, job openings, culture, and benefits. It uses tabs to organize
+ * different sections of company information.
+ * 
+ * @returns JSX element representing the company profile page
+ * 
+ * @example
+ * ```tsx
+ * <CompanyProfilePage />
+ * ```
+ */
 export default function CompanyProfilePage() {
+  // ============================================================================
+  // HOOKS
+  // React hooks for component functionality
+  // ============================================================================
+
+  /** Get company ID from URL parameters */
   const { id } = useParams();
 
-  // Mock company data
-  const company = {
+  // ============================================================================
+  // MOCK DATA
+  // Sample data for demonstration purposes
+  // ============================================================================
+
+  /** Sample company data */
+  const company: Company = {
     id: id,
     name: 'TechCorp Inc.',
     logo: '/api/placeholder/120/120',
@@ -37,7 +146,7 @@ export default function CompanyProfilePage() {
     ],
     openJobs: [
       {
-        id: '1',
+        id: 1,
         title: 'Senior Software Engineer',
         company: 'TechCorp Inc.',
         location: 'San Francisco, CA',
@@ -50,7 +159,7 @@ export default function CompanyProfilePage() {
         description: 'Join our team to build scalable web applications...',
       },
       {
-        id: '2',
+        id: 2,
         title: 'Product Manager',
         company: 'TechCorp Inc.',
         location: 'San Francisco, CA',
@@ -63,7 +172,7 @@ export default function CompanyProfilePage() {
         description: 'Lead product strategy and development...',
       },
       {
-        id: '3',
+        id: 3,
         title: 'UX Designer',
         company: 'TechCorp Inc.',
         location: 'Remote',
@@ -78,191 +187,254 @@ export default function CompanyProfilePage() {
     ]
   };
 
-  return (
-    <div className="min-h-screen">
-      {/* Banner Section */}
-      <div className="relative h-64 bg-gradient-to-r from-primary/20 to-secondary/20">
-        <img
-          src={company.banner}
-          alt={`${company.name} banner`}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
+  // ============================================================================
+  // MAIN RENDER
+  // Primary component render function
+  // ============================================================================
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Company Header */}
-        <div className="relative -mt-20 mb-8">
-          <div className="bg-background rounded-lg shadow-lg p-6">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <img
-                src={company.logo}
-                alt={`${company.name} logo`}
-                className="w-24 h-24 rounded-lg border bg-white"
-              />
-              <div className="flex-1">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <h1 className="text-3xl font-bold mb-2">{company.name}</h1>
-                    <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
-                      <div className="flex items-center">
-                        <Building2 className="h-4 w-4 mr-1" />
-                        {company.industry}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1" />
-                        {company.size}
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {company.location}
-                      </div>
-                      <div className="flex items-center">
-                        <Star className="h-4 w-4 mr-1 text-yellow-500" />
-                        {company.rating} ({company.reviewCount} reviews)
+  /**
+   * Render the company profile page
+   * 
+   * Returns the complete company profile UI with tabs and detailed information
+   */
+  return (
+    <ErrorBoundary>
+      <SEOHead
+        title={`${company.name} - Company Profile`}
+        description={`Learn about ${company.name}, their mission, culture, and open job positions.`}
+        keywords={`company profile, ${company.name}, job opportunities, company culture`}
+      />
+      
+      <main className="min-h-screen">
+        {/* Banner Section */}
+        <div className="relative h-64 bg-gradient-to-r from-primary/20 to-secondary/20">
+          <img
+            src={company.banner}
+            alt={`${company.name} banner`}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Company Header */}
+          <div className="relative -mt-20 mb-8">
+            <div className="bg-background rounded-lg shadow-lg p-6">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <img
+                  src={company.logo}
+                  alt={`${company.name} logo`}
+                  className="w-24 h-24 rounded-lg border bg-white"
+                />
+                <div className="flex-1">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <h1 className="text-3xl font-bold mb-2">{company.name}</h1>
+                      <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
+                        <div className="flex items-center">
+                          <Building2 className="h-4 w-4 mr-1" />
+                          {company.industry}
+                        </div>
+                        <div className="flex items-center">
+                          <Users className="h-4 w-4 mr-1" />
+                          {company.size}
+                        </div>
+                        <div className="flex items-center">
+                          <MapPin className="h-4 w-4 mr-1" />
+                          {company.location}
+                        </div>
+                        <div className="flex items-center">
+                          <Star className="h-4 w-4 mr-1 text-yellow-500" />
+                          {company.rating} ({company.reviewCount} reviews)
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <Button variant="outline" asChild>
-                      <a href={company.website} target="_blank" rel="noopener noreferrer">
-                        <Globe className="h-4 w-4 mr-2" />
-                        Website
-                      </a>
-                    </Button>
-                    <Button>Follow Company</Button>
+                    <div className="flex gap-3">
+                      <Button variant="outline" asChild>
+                        <a href={company.website} target="_blank" rel="noopener noreferrer">
+                          <Globe className="h-4 w-4 mr-2" />
+                          Website
+                        </a>
+                      </Button>
+                      <Button>Follow Company</Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Company Content */}
-        <Tabs defaultValue="overview" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="jobs">Jobs ({company.openJobs.length})</TabsTrigger>
-            <TabsTrigger value="culture">Culture</TabsTrigger>
-          </TabsList>
+          {/* Company Content */}
+          <Tabs defaultValue="overview" className="space-y-8">
+            <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="jobs">Jobs ({company.openJobs.length})</TabsTrigger>
+              <TabsTrigger value="culture">Culture</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="overview" className="space-y-8">
-            <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>About {company.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {company.description}
-                    </p>
-                  </CardContent>
-                </Card>
+            <TabsContent value="overview" className="space-y-8">
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>About {company.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {company.description}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Our Mission</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {company.mission}
-                    </p>
-                  </CardContent>
-                </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Our Mission</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {company.mission}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Company Info</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div>
+                        <span className="font-medium">Founded:</span>
+                        <span className="ml-2 text-muted-foreground">{company.founded}</span>
+                      </div>
+                      <div>
+                        <span className="font-medium">Industry:</span>
+                        <span className="ml-2 text-muted-foreground">{company.industry}</span>
+                      </div>
+                      <div>
+                        <span className="font-medium">Company Size:</span>
+                        <span className="ml-2 text-muted-foreground">{company.size}</span>
+                      </div>
+                      <div>
+                        <span className="font-medium">Headquarters:</span>
+                        <span className="ml-2 text-muted-foreground">{company.location}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Company Ratings</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center gap-2">
+                        <Star className="h-5 w-5 text-yellow-500 fill-current" />
+                        <span className="text-lg font-medium">{company.rating}</span>
+                        <span className="text-muted-foreground">({company.reviewCount} reviews)</span>
+                      </div>
+                      <div className="mt-4 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Work-Life Balance</span>
+                          <div className="flex items-center gap-1">
+                            <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                            <span>4.7</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Career Growth</span>
+                          <div className="flex items-center gap-1">
+                            <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                            <span>4.3</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Compensation</span>
+                          <div className="flex items-center gap-1">
+                            <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                            <span>4.6</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="jobs" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Open Positions</h2>
+                <p className="text-muted-foreground">{company.openJobs.length} jobs available</p>
               </div>
 
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Company Info</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <span className="font-medium">Founded:</span>
-                      <span className="ml-2 text-muted-foreground">{company.founded}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">Industry:</span>
-                      <span className="ml-2 text-muted-foreground">{company.industry}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">Company Size:</span>
-                      <span className="ml-2 text-muted-foreground">{company.size}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">Headquarters:</span>
-                      <span className="ml-2 text-muted-foreground">{company.location}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {company.openJobs.map((job) => (
+                  <JobCard key={job.id} job={job} />
+                ))}
+              </div>
+            </TabsContent>
 
+            <TabsContent value="culture" className="space-y-8">
+              <div className="grid lg:grid-cols-2 gap-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Our Values</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {company.values.map((value) => (
-                        <Badge key={value} variant="secondary">
-                          {value}
-                        </Badge>
+                    <div className="grid grid-cols-2 gap-4">
+                      {company.values.map((value, index) => (
+                        <div key={index} className="flex items-center gap-2 p-3 border rounded-lg">
+                          <div className="w-2 h-2 rounded-full bg-primary" />
+                          <span>{value}</span>
+                        </div>
                       ))}
                     </div>
                   </CardContent>
                 </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Employee Benefits</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {company.benefits.map((benefit, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="text-primary mr-2">•</span>
+                          <span className="text-muted-foreground">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
               </div>
-            </div>
-          </TabsContent>
 
-          <TabsContent value="jobs" className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Open Positions</h2>
-              <p className="text-muted-foreground mb-6">
-                Explore career opportunities and join our growing team
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {company.openJobs.map((job) => (
-                <JobCard key={job.id} job={job} />
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="culture" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Benefits & Perks</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {company.benefits.map((benefit, index) => (
-                    <div key={index} className="flex items-center">
-                      <span className="text-green-600 mr-3">✓</span>
-                      <span>{benefit}</span>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Work Environment</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="text-center p-4 border rounded-lg">
+                      <div className="text-3xl font-bold text-primary mb-2">95%</div>
+                      <p className="text-sm text-muted-foreground">Employee Satisfaction</p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Work Environment</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  At TechCorp, we believe in fostering a collaborative and inclusive work environment 
-                  where every team member can thrive. Our modern offices are designed to promote 
-                  creativity and productivity, while our flexible work policies ensure a healthy 
-                  work-life balance.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
+                    <div className="text-center p-4 border rounded-lg">
+                      <div className="text-3xl font-bold text-primary mb-2">2.5x</div>
+                      <p className="text-sm text-muted-foreground">Industry Avg. Growth</p>
+                    </div>
+                    <div className="text-center p-4 border rounded-lg">
+                      <div className="text-3xl font-bold text-primary mb-2">15+</div>
+                      <p className="text-sm text-muted-foreground">Countries Represented</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </main>
+    </ErrorBoundary>
   );
 }

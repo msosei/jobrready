@@ -1,18 +1,95 @@
+/**
+ * Hero Section Component for MyBrand Job Application Platform
+ * 
+ * This component displays the main hero section on the home page with a
+ * prominent search form and key value propositions to attract users.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React component and utility imports
+// ============================================================================
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, MapPin, Sparkles } from 'lucide-react';
 
+// ============================================================================
+// COMPONENT PROPS INTERFACE
+// TypeScript interface for component properties
+// ============================================================================
+
+/**
+ * Hero section component props interface
+ * 
+ * Defines the properties for the hero section component
+ */
+interface HeroSectionProps {}
+
+// ============================================================================
+// COMPONENT IMPLEMENTATION
+// Main component function with comprehensive documentation
+// ============================================================================
+
+/**
+ * Hero section component for the home page
+ * 
+ * This component displays the main hero section on the home page with a
+ * prominent search form, key value propositions, and popular search terms.
+ * It serves as the primary entry point for job seekers to find opportunities.
+ * 
+ * @param props - Component properties
+ * @returns JSX element representing the hero section
+ * 
+ * @example
+ * ```tsx
+ * <HeroSection />
+ * ```
+ */
 export default function HeroSection() {
+  // ============================================================================
+  // STATE MANAGEMENT
+  // Component state for search inputs
+  // ============================================================================
+
+  /** Search keyword input value */
   const [keyword, setKeyword] = useState('');
+  
+  /** Location input value */
   const [location, setLocation] = useState('');
 
+  // ============================================================================
+  // EVENT HANDLERS
+  // Functions for handling user interactions and events
+  // ============================================================================
+
+  /**
+   * Handle search form submission
+   * 
+   * Processes the search form submission and logs the search parameters
+   * 
+   * @param e - Form submission event
+   */
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle search logic here
     console.log('Searching for:', { keyword, location });
   };
 
+  // ============================================================================
+  // MAIN RENDER
+  // Primary component render function
+  // ============================================================================
+
+  /**
+   * Render the hero section component
+   * 
+   * Returns the complete hero section UI with search form and popular searches
+   */
   return (
     <section className="relative bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20 lg:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

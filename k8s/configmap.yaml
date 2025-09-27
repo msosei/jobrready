@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mybrand-config
+data:
+  APP_URL: "http://mybrand-frontend-service:3000"
+  API_URL: "http://mybrand-backend-service:8000"
+  REDIS_URL: "redis://redis-service:6379"
+  SKILL_GAP_SERVICE_URL: "http://skill-gap-service:8105"
+  RESUME_BUILDER_SERVICE_URL: "http://resume-builder-service:8106"
+  RESUME_ENHANCER_SERVICE_URL: "http://resume-enhancer-service:8107"
+  INTERVIEW_COACH_SERVICE_URL: "http://interview-coach-service:8108"
+  APPLICATION_FILLER_SERVICE_URL: "http://application-filler-service:8109"
+  SEMANTIC_MATCHER_SERVICE_URL: "http://semantic-matcher-service:8110"
+  JOB_RECOMMENDER_SERVICE_URL: "http://job-recommender-service:8111"
+  MOCK_INTERVIEWER_SERVICE_URL: "http://mock-interviewer-service:8114"
+  DIVERSITY_INSIGHTS_SERVICE_URL: "http://diversity-insights-service:8115"
+  DOCUMENT_SUMMARIZER_SERVICE_URL: "http://document-summarizer-service:8116"
+  VOICE_AGENT_SERVICE_URL: "http://voice-agent-service:8117"
+  MULTI_LANGUAGE_SERVICE_URL: "http://multi-language-service:8118"
+  COURSE_RECOMMENDER_SERVICE_URL: "http://course-recommender-service:8119"

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { FixedSizeList as List } from 'react-window';
-import type { Job } from '~backend/jobs/search';
+import type { Job } from '@/src/api/client';
 import JobCard from './JobCard';
 
 interface VirtualJobListProps {
@@ -42,10 +42,10 @@ export default function VirtualJobList({
   return (
     <List
       height={height}
+      width="100%"
       itemCount={jobs.length}
       itemSize={itemHeight}
       itemData={jobs}
-      role="list"
       aria-label="Job listings"
     >
       {Row}

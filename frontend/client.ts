@@ -4,7 +4,7 @@
 /* eslint-disable */
 /* jshint ignore:start */
 /*jslint-disable*/
-import type { CookieWithOptions } from "encore.dev/api";
+// import type { CookieWithOptions } from "encore.dev/api";
 
 /**
  * BaseURL is the base URL for calling the Encore application's API.
@@ -33,8 +33,8 @@ const BROWSER = typeof globalThis === "object" && ("window" in globalThis);
  * Client is an API client for the  Encore application.
  */
 export class Client {
-    public readonly jobs: jobs.ServiceClient
-    public readonly notifications: notifications.ServiceClient
+    // public readonly jobs: jobs.ServiceClient
+    // public readonly notifications: notifications.ServiceClient
     private readonly options: ClientOptions
     private readonly target: string
 
@@ -49,8 +49,8 @@ export class Client {
         this.target = target
         this.options = options ?? {}
         const base = new BaseClient(this.target, this.options)
-        this.jobs = new jobs.ServiceClient(base)
-        this.notifications = new notifications.ServiceClient(base)
+        // this.jobs = new jobs.ServiceClient(base)
+        // this.notifications = new notifications.ServiceClient(base)
     }
 
     /**
@@ -84,9 +84,15 @@ export interface ClientOptions {
 /**
  * Import the endpoint handlers to derive the types for the client.
  */
-import { get as api_jobs_get_get } from "~backend/jobs/get";
-import { search as api_jobs_search_search } from "~backend/jobs/search";
+// import { get as api_jobs_get_get } from "~backend/jobs/get";
+// import { search as api_jobs_search_search } from "~backend/jobs/search";
 
+// ============================================================================
+// JOBS SERVICE CLIENT
+// Client for interacting with job-related API endpoints
+// ============================================================================
+
+/*
 export namespace jobs {
 
     export class ServiceClient {
@@ -101,6 +107,7 @@ export namespace jobs {
         /**
          * Get a single job by ID
          */
+/*
         public async get(params: { id: number }): Promise<ResponseType<typeof api_jobs_get_get>> {
             // Now make the actual call to the API
             const resp = await this.baseClient.callTypedAPI(`/jobs/${encodeURIComponent(params.id)}`, {method: "GET", body: undefined})
@@ -110,6 +117,7 @@ export namespace jobs {
         /**
          * Search jobs with filters
          */
+/*
         public async search(params: RequestType<typeof api_jobs_search_search>): Promise<ResponseType<typeof api_jobs_search_search>> {
             // Convert our params into the objects we need for the request
             const query = makeRecord<string, string | string[]>({
@@ -131,13 +139,20 @@ export namespace jobs {
         }
     }
 }
+*/
 
 /**
  * Import the endpoint handlers to derive the types for the client.
  */
-import { notifications as api_notifications_stream_notifications } from "~backend/notifications/stream";
-import { send as api_notifications_trigger_send } from "~backend/notifications/trigger";
+// import { notifications as api_notifications_stream_notifications } from "~backend/notifications/stream";
+// import { send as api_notifications_trigger_send } from "~backend/notifications/trigger";
 
+// ============================================================================
+// NOTIFICATIONS SERVICE CLIENT
+// Client for interacting with notification-related API endpoints
+// ============================================================================
+
+/*
 export namespace notifications {
 
     export class ServiceClient {
@@ -152,6 +167,7 @@ export namespace notifications {
         /**
          * Real-time notification stream
          */
+/*
         public async notifications(params: RequestType<typeof api_notifications_stream_notifications>): Promise<StreamIn<StreamResponse<typeof api_notifications_stream_notifications>>> {
             // Convert our params into the objects we need for the request
             const query = makeRecord<string, string | string[]>({
@@ -164,6 +180,7 @@ export namespace notifications {
         /**
          * Trigger a notification (for testing purposes)
          */
+/*
         public async send(params: RequestType<typeof api_notifications_trigger_send>): Promise<ResponseType<typeof api_notifications_trigger_send>> {
             // Now make the actual call to the API
             const resp = await this.baseClient.callTypedAPI(`/notifications/send`, {method: "POST", body: JSON.stringify(params)})
@@ -171,21 +188,24 @@ export namespace notifications {
         }
     }
 }
+*/
 
 
 type PickMethods<Type> = Omit<CallParameters, "method"> & { method?: Type };
 
 // Helper type to omit all fields that are cookies.
+// Define a placeholder type since we can't import CookieWithOptions
+type CookieWithOptions<T> = T;
 type OmitCookie<T> = {
   [K in keyof T as T[K] extends CookieWithOptions<any> ? never : K]: T[K];
 };
 
-type RequestType<Type extends (...args: any[]) => any> =
-  Parameters<Type> extends [infer H, ...any[]]
-    ? OmitCookie<H>
-    : void;
+// type RequestType<Type extends (...args: any[]) => any> =
+//   Parameters<Type> extends [infer H, ...any[]]
+//     ? OmitCookie<H>
+//     : void;
 
-type ResponseType<Type extends (...args: any[]) => any> = OmitCookie<Awaited<ReturnType<Type>>>;
+// type ResponseType<Type extends (...args: any[]) => any> = OmitCookie<Awaited<ReturnType<Type>>>;
 
 function dateReviver(key: string, value: any): any {
   if (
@@ -226,6 +246,7 @@ function makeRecord<K extends string | number | symbol, V>(record: Record<K, V |
     return record as Record<K, V>
 }
 
+/*
 import {
   StreamInOutHandlerFn,
   StreamInHandlerFn,
@@ -255,7 +276,14 @@ function encodeWebSocketHeaders(headers: Record<string, string>) {
       .replaceAll("/", "_");
     return "encore.dev.headers." + base64encoded;
 }
+*/
 
+// ============================================================================
+// WEBSOCKET CONNECTION CLASSES
+// Classes for handling WebSocket connections and streaming data
+// ============================================================================
+
+/*
 class WebSocketConnection {
     public ws: WebSocket;
 
@@ -417,6 +445,7 @@ export class StreamOut<Request, Response> {
         return this.socket.ws.send(JSON.stringify(msg));
     }
 }
+*/
 // CallParameters is the type of the parameters to a method call, but require headers to be a Record type
 type CallParameters = Omit<RequestInit, "headers"> & {
     /** Headers to be sent with the request */
@@ -431,6 +460,11 @@ type CallParameters = Omit<RequestInit, "headers"> & {
 export type Fetcher = typeof fetch;
 
 const boundFetch = fetch.bind(this);
+
+// ============================================================================
+// BASE CLIENT CLASS
+// Core client functionality for making API calls and handling responses
+// ============================================================================
 
 class BaseClient {
     readonly baseURL: string
@@ -462,6 +496,7 @@ class BaseClient {
         return undefined;
     }
 
+    /*
     // createStreamInOut sets up a stream to a streaming API endpoint.
     async createStreamInOut<Request, Response>(path: string, params?: CallParameters): Promise<StreamInOut<Request, Response>> {
         let { query, headers } = params ?? {};
@@ -524,6 +559,7 @@ class BaseClient {
         const queryString = query ? '?' + encodeQuery(query) : ''
         return new StreamOut(this.baseURL + path + queryString, headers);
     }
+    */
 
     // callTypedAPI makes an API call, defaulting content type to "application/json"
     public async callTypedAPI(path: string, params?: CallParameters): Promise<Response> {
@@ -865,4 +901,195 @@ export enum ErrCode {
     Unauthenticated = "unauthenticated",
 }
 
-export default new Client(import.meta.env.VITE_CLIENT_TARGET, { requestInit: { credentials: "include" } });
+export default new Client((typeof process !== 'undefined' && process.env?.VITE_CLIENT_TARGET) || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_CLIENT_TARGET) || 'http://localhost:4000', { requestInit: { credentials: "include" } });
+
+/*
+ * Custom API Client for the MyBrand Job Application Platform
+ * 
+ * This section provides a simplified interface for interacting with the backend API.
+ * It includes functions for job search, notifications, skill gap analysis, and real-time communication.
+ * 
+ * The client is designed to work with the FastAPI backend and provides:
+ * 1. Type-safe API calls with proper error handling
+ * 2. Environment-based configuration for different deployment contexts
+ * 3. WebSocket support for real-time notifications
+ * 4. Consistent error handling and response parsing
+ */
+
+/**
+ * API Base URL Configuration
+ * 
+ * The API base URL is determined in the following order:
+ * 1. VITE_API_URL environment variable (for development)
+ * 2. VITE_CLIENT_TARGET environment variable (for Encore client)
+ * 3. Default to localhost:8000
+ */
+const API_BASE_URL = (typeof process !== 'undefined' && process.env?.VITE_API_URL) || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) || (typeof process !== 'undefined' && process.env?.VITE_CLIENT_TARGET) || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_CLIENT_TARGET) || 'http://localhost:8000';
+
+// Validate that we have a proper API base URL
+if (!API_BASE_URL || API_BASE_URL === 'undefined') {
+  console.warn('API_BASE_URL is not properly configured. Using default URL.');
+}
+
+/*
+ * Type definitions for API responses and requests
+ * 
+ * These interfaces define the structure of data exchanged with the backend API.
+ * They provide type safety and documentation for the expected data formats.
+ */
+
+interface Job {
+  id: number;
+  title: string;
+  company: string;
+  location: string;
+  salary?: string;
+  type: string;
+  remote: boolean;
+  urgent: boolean;
+  description: string;
+  requirements?: string[];
+  benefits?: string[];
+  posted: string;
+  isNew: boolean;
+}
+
+interface JobSearchRequest {
+  keyword?: string;
+  location?: string;
+  jobType?: string;
+  company?: string;
+  remote?: boolean;
+  limit?: number;
+  offset?: number;
+}
+
+interface JobSearchResponse {
+  jobs: Job[];
+  total: number;
+  hasMore: boolean;
+}
+
+interface SkillGapRequest {
+  resume_text: string;
+  job_description: string;
+}
+
+interface SkillGapResponse {
+  missing_skills: string[];
+  matched_skills: string[];
+  skill_gap_score: number;
+  recommendations: string[];
+}
+
+/*
+ * Job Search API Functions
+ * 
+ * These functions provide a clean interface for searching jobs through the backend API.
+ * They handle parameter serialization, API calls, and response parsing.
+ */
+
+/**
+ * Search for jobs based on provided criteria
+ * 
+ * @param params - Search parameters including keyword, location, job type, etc.
+ * @returns Promise resolving to job search results
+ * @throws Error if the API request fails
+ */
+export const searchJobs = async (params: JobSearchRequest): Promise<JobSearchResponse> => {
+  const queryParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      queryParams.append(key, value.toString());
+    }
+  });
+
+  const response = await fetch(`${API_BASE_URL}/jobs/search?${queryParams}`);
+  if (!response.ok) {
+    throw new Error('Failed to search jobs');
+  }
+  return response.json();
+};
+
+/*
+ * Notification API Functions
+ * 
+ * These functions handle sending notifications through the backend API.
+ * They provide a simple interface for triggering notifications for testing purposes.
+ */
+
+/**
+ * Send a notification to a user
+ * 
+ * @param userId - ID of the user to send notification to
+ * @param type - Type of notification
+ * @param title - Notification title
+ * @param message - Notification message content
+ * @returns Promise resolving to API response
+ * @throws Error if the API request fails
+ */
+export const sendNotification = async (
+  userId: string,
+  type: string,
+  title: string,
+  message: string
+) => {
+  const response = await fetch(`${API_BASE_URL}/notifications/send`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ user_id: userId, notification_type: type, title, message }),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to send notification');
+  }
+  return response.json();
+};
+
+/*
+ * Skill Gap Analysis API Functions
+ * 
+ * These functions provide interfaces for analyzing skill gaps between resumes and job descriptions.
+ * They handle the communication with the AI-powered skill gap analysis service.
+ */
+
+/**
+ * Analyze skill gaps between a resume and job description
+ * 
+ * @param request - Object containing resume text and job description
+ * @returns Promise resolving to skill gap analysis results
+ * @throws Error if the API request fails
+ */
+export const analyzeSkillGaps = async (request: SkillGapRequest): Promise<SkillGapResponse> => {
+  const response = await fetch(`${API_BASE_URL}/ai/skill-gap/analyze`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to analyze skill gaps');
+  }
+  
+  return response.json();
+};
+
+/*
+ * WebSocket Functions for Real-time Communication
+ * 
+ * These functions establish WebSocket connections for real-time notifications.
+ * They handle the protocol conversion from HTTP to WebSocket URLs.
+ */
+
+/**
+ * Create a WebSocket connection for real-time notifications
+ * 
+ * @param userId - ID of the user to receive notifications for (defaults to 'anonymous')
+ * @returns WebSocket connection instance
+ */
+export const createNotificationWebSocket = (userId: string = 'anonymous') => {
+  return new WebSocket(`${API_BASE_URL.replace('http', 'ws')}/ws/notifications?user_id=${userId}`);
+};

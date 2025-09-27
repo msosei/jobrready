@@ -1,0 +1,317 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - mybrand-net
+
+  # Skill Gap Analyzer Microservice
+  skill_gap_analyzer:
+    build:
+      context: ./microservices/skill_gap_analyzer
+    ports:
+      - "8105:8105"
+    environment:
+      - PORT=8105
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8105/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Resume Builder Microservice
+  resume_builder:
+    build:
+      context: ./microservices/resume_builder
+    ports:
+      - "8106:8106"
+    environment:
+      - PORT=8106
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8106/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Resume Enhancer Microservice
+  resume_enhancer:
+    build:
+      context: ./microservices/resume_enhancer
+    ports:
+      - "8107:8107"
+    environment:
+      - PORT=8107
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8107/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Interview Prep Coach Microservice
+  interview_coach:
+    build:
+      context: ./microservices/interview_coach
+    ports:
+      - "8108:8108"
+    environment:
+      - PORT=8108
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8108/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Job Application Auto-Fill Microservice
+  application_filler:
+    build:
+      context: ./microservices/application_filler
+    ports:
+      - "8109:8109"
+    environment:
+      - PORT=8109
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8109/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Semantic Job Matcher Microservice
+  semantic_matcher:
+    build:
+      context: ./microservices/semantic_matcher
+    ports:
+      - "8110:8110"
+    environment:
+      - PORT=8110
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8110/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Personalized Job Recommender Microservice
+  job_recommender:
+    build:
+      context: ./microservices/job_recommender
+    ports:
+      - "8111:8111"
+    environment:
+      - PORT=8111
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8111/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # AI Mock Interviewer Microservice
+  mock_interviewer:
+    build:
+      context: ./microservices/mock_interviewer
+    ports:
+      - "8114:8114"
+    environment:
+      - PORT=8114
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8114/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Diversity & Inclusion Insights Microservice
+  diversity_insights:
+    build:
+      context: ./microservices/diversity_insights
+    ports:
+      - "8115:8115"
+    environment:
+      - PORT=8115
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8115/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Document Summarizer Microservice
+  document_summarizer:
+    build:
+      context: ./microservices/document_summarizer
+    ports:
+      - "8116:8116"
+    environment:
+      - PORT=8116
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8116/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Voice Agent Microservice
+  voice_agent:
+    build:
+      context: ./microservices/voice_agent
+    ports:
+      - "8117:8117"
+    environment:
+      - PORT=8117
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8117/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Multi-Language Support Microservice
+  multi_language:
+    build:
+      context: ./microservices/multi_language
+    ports:
+      - "8118:8118"
+    environment:
+      - PORT=8118
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8118/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Course Recommendation Engine Microservice
+  course_recommender:
+    build:
+      context: ./microservices/course_recommender
+    ports:
+      - "8119:8119"
+    environment:
+      - PORT=8119
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8119/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Backend (FastAPI)
+  backend:
+    build:
+      context: ./backend
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE=${SUPABASE_SERVICE_ROLE}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - APP_URL=${APP_URL}
+      - SKILL_GAP_SERVICE_URL=http://skill_gap_analyzer:8105
+      - RESUME_BUILDER_SERVICE_URL=http://resume_builder:8106
+      - RESUME_ENHANCER_SERVICE_URL=http://resume_enhancer:8107
+      - INTERVIEW_COACH_SERVICE_URL=http://interview_coach:8108
+      - APPLICATION_FILLER_SERVICE_URL=http://application_filler:8109
+      - SEMANTIC_MATCHER_SERVICE_URL=http://semantic_matcher:8110
+      - JOB_RECOMMENDER_SERVICE_URL=http://job_recommender:8111
+      - MOCK_INTERVIEWER_SERVICE_URL=http://mock_interviewer:8114
+      - DIVERSITY_INSIGHTS_SERVICE_URL=http://diversity_insights:8115
+      - DOCUMENT_SUMMARIZER_SERVICE_URL=http://document_summarizer:8116
+      - VOICE_AGENT_SERVICE_URL=http://voice_agent:8117
+      - MULTI_LANGUAGE_SERVICE_URL=http://multi_language:8118
+      - COURSE_RECOMMENDER_SERVICE_URL=http://course_recommender:8119
+    depends_on:
+      redis:
+        condition: service_healthy
+      skill_gap_analyzer:
+        condition: service_healthy
+      resume_builder:
+        condition: service_healthy
+      resume_enhancer:
+        condition: service_healthy
+      interview_coach:
+        condition: service_healthy
+      application_filler:
+        condition: service_healthy
+      semantic_matcher:
+        condition: service_healthy
+      job_recommender:
+        condition: service_healthy
+      mock_interviewer:
+        condition: service_healthy
+      diversity_insights:
+        condition: service_healthy
+      document_summarizer:
+        condition: service_healthy
+      voice_agent:
+        condition: service_healthy
+      multi_language:
+        condition: service_healthy
+      course_recommender:
+        condition: service_healthy
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+  # Frontend (Vite/React)
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_SUPABASE_URL=${SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    depends_on:
+      - backend
+    networks:
+      - mybrand-net
+    restart: unless-stopped
+
+networks:
+  mybrand-net:
+    driver: bridge

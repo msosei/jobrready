@@ -1,7 +1,81 @@
+/**
+ * Featured Companies Component for MyBrand Job Application Platform
+ * 
+ * This component displays a grid of featured companies that are actively
+ * hiring, encouraging users to explore opportunities at top organizations.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React component and utility imports
+// ============================================================================
+
 import { Card } from '@/components/ui/card';
 
+// ============================================================================
+// DATA INTERFACES
+// TypeScript interfaces for data structures
+// ============================================================================
+
+/**
+ * Featured company data interface
+ * 
+ * Represents a company featured on the home page
+ */
+interface FeaturedCompany {
+  /** Company name */
+  name: string;
+  
+  /** Company logo URL */
+  logo: string;
+  
+  /** Number of open job positions */
+  openJobs: number;
+}
+
+// ============================================================================
+// COMPONENT PROPS INTERFACE
+// TypeScript interface for component properties
+// ============================================================================
+
+/**
+ * Featured companies component props interface
+ * 
+ * Defines the properties for the featured companies component
+ */
+interface FeaturedCompaniesProps {}
+
+// ============================================================================
+// COMPONENT IMPLEMENTATION
+// Main component function with comprehensive documentation
+// ============================================================================
+
+/**
+ * Featured companies component for the home page
+ * 
+ * This component displays a grid of featured companies that are actively
+ * hiring, encouraging users to explore opportunities at top organizations.
+ * Each company card shows the company logo, name, and number of open positions.
+ * 
+ * @param props - Component properties
+ * @returns JSX element representing the featured companies section
+ * 
+ * @example
+ * ```tsx
+ * <FeaturedCompanies />
+ * ```
+ */
 export default function FeaturedCompanies() {
-  const companies = [
+  // ============================================================================
+  // MOCK DATA
+  // Sample data for demonstration purposes
+  // ============================================================================
+
+  /** Sample featured companies data */
+  const companies: FeaturedCompany[] = [
     { name: 'Google', logo: '/api/placeholder/120/60', openJobs: 45 },
     { name: 'Microsoft', logo: '/api/placeholder/120/60', openJobs: 32 },
     { name: 'Apple', logo: '/api/placeholder/120/60', openJobs: 28 },
@@ -12,6 +86,16 @@ export default function FeaturedCompanies() {
     { name: 'Spotify', logo: '/api/placeholder/120/60', openJobs: 19 },
   ];
 
+  // ============================================================================
+  // MAIN RENDER
+  // Primary component render function
+  // ============================================================================
+
+  /**
+   * Render the featured companies component
+   * 
+   * Returns the complete featured companies section UI with company cards
+   */
   return (
     <section className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-12">

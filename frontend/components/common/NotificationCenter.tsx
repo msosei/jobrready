@@ -1,3 +1,19 @@
+/**
+ * Notification Center Component for MyBrand Job Application Platform
+ * 
+ * This component provides a notification center with real-time updates
+ * using WebSocket connections, displaying job matches, application status,
+ * and other important notifications.
+ * 
+ * @version 2.0
+ * @author MyBrand Team
+ */
+
+// ============================================================================
+// IMPORT STATEMENTS
+// React component and utility imports
+// ============================================================================
+
 import { useState } from 'react';
 import { Bell, Check, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,14 +23,58 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useNotifications } from '../../hooks/useNotifications';
 import { formatDistanceToNow } from 'date-fns';
 
+// ============================================================================
+// COMPONENT PROPS INTERFACE
+// TypeScript interface for component properties
+// ============================================================================
+
+/**
+ * Notification center component props interface
+ * 
+ * Defines the properties required to display the notification center
+ */
 interface NotificationCenterProps {
+  /** Optional user ID for personalized notifications */
   userId?: string;
 }
 
+// ============================================================================
+// COMPONENT IMPLEMENTATION
+// Main component function with comprehensive documentation
+// ============================================================================
+
+/**
+ * Notification center component for displaying real-time notifications
+ * 
+ * This component renders a slide-out panel with real-time notifications
+ * using WebSocket connections. It displays job matches, application status
+ * updates, and other important notifications with read/unread status
+ * and connection indicators.
+ * 
+ * @param props - Component properties
+ * @param props.userId - Optional user ID for personalized notifications
+ * @returns JSX element representing the notification center
+ * 
+ * @example
+ * ```tsx
+ * <NotificationCenter userId="user123" />
+ * ```
+ */
 export default function NotificationCenter({ userId }: NotificationCenterProps) {
+  // State for managing the open/closed state of the notification sheet
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Get notification data and functions from the useNotifications hook
   const { notifications, unreadCount, isConnected, markAsRead, clearAll } = useNotifications(userId);
 
+  /**
+   * Get appropriate icon for notification type
+   * 
+   * Returns an emoji icon based on the notification type for visual distinction
+   * 
+   * @param type - The type of notification
+   * @returns Emoji string representing the notification type
+   */
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'job_match':
@@ -28,6 +88,11 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
     }
   };
 
+  /**
+   * Render the notification center component
+   * 
+   * Returns a sheet component with notification list and management controls
+   */
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>

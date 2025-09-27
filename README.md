@@ -1,144 +1,279 @@
 # MyBrand Job Application Platform
 
-Developer-ready scaffold for a full-stack job-application platform inspired by modern job tools. Includes Next.js frontend, FastAPI backend, Redis/BullMQ workers, AI microservices, and a Chrome Extension (MV3), with Supabase (Postgres, Auth, Storage) and Stripe billing integration.
+A comprehensive job application platform with AI-powered career tools and services.
 
-## Tech Stack
-- Frontend: Next.js + React + TailwindCSS (TypeScript)
-- Backend: FastAPI (Python) with Supabase
-- Queue: Redis + BullMQ (Node)
-- AI Microservices: Python FastAPI services (Docker-ready)
-- Chrome Extension: Manifest v3
-- Billing: Stripe
-- Auth/DB/Storage: Supabase
+## Table of Contents
 
-## Monorepo Structure
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Application](#running-the-application)
+- [API Documentation](#api-documentation)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Overview
+
+The MyBrand Job Application Platform is a modern, AI-powered job search and career development platform. It provides job seekers with tools to find jobs, build resumes, prepare for interviews, and identify skill gaps. The platform integrates with multiple AI microservices to deliver personalized career guidance.
+
+## Features
+
+### Job Search
+- Advanced job search with filtering by keyword, location, job type, and company
+- Integration with Adzuna job API for real-time job listings
+- Local job search fallback for offline development
+
+### AI Career Tools
+- **Skill Gap Analysis**: Compare your resume with job descriptions to identify missing skills
+- **Resume Builder**: Generate professional resumes from your data
+- **Resume Enhancer**: Improve existing resumes with AI-powered suggestions
+- **Interview Coach**: Get personalized interview questions and preparation tips
+- **Job Matcher**: Find jobs that match your skills and career goals
+- **Mock Interviewer**: Practice interviews with AI-powered feedback
+- **Document Summarizer**: Summarize job descriptions and other documents
+
+### Real-time Features
+- WebSocket-based real-time notifications
+- Instant messaging between candidates and employers
+
+### Additional Services
+- Multi-language support
+- Diversity and inclusion insights
+- Course recommendations
+- Voice agent for hands-free interaction
+
+## Architecture
+
+The platform follows a microservices architecture with the following components:
+
 ```
-frontend/
-backend/
-  functions/
-  workers/
-microservices/
-  resume_parser/
-  cover_letter_generator/
-  job_matcher/
-  resume_scorer/
-chrome_extension/
-config/
-scripts/
+┌─────────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│   Frontend      │    │   Backend API    │    │   Microservices  │
+│   (React/Vite)  │◄──►│   (FastAPI)      │◄──►│   (15+ services) │
+└─────────────────┘    └──────────────────┘    └──────────────────┘
+                              │                         │
+                              ▼                         ▼
+                       ┌─────────────┐         ┌─────────────────┐
+                       │   Redis     │         │   External APIs │
+                       │ (Caching)   │         │ (Adzuna, etc.)  │
+                       └─────────────┘         └─────────────────┘
 ```
 
-## Quickstart
+### Backend Services
 
-### Automated Setup
+1. **Main API Service** - Central API gateway
+2. **Job Search Service** - Job listing and search functionality
+3. **Notification Service** - Real-time messaging and notifications
+4. **15+ AI Microservices** - Specialized AI-powered career tools
+
+### Frontend
+
+- Built with React and TypeScript
+- Uses Vite for fast development and building
+- Responsive design for all devices
+- Real-time updates via WebSocket
+
+## Prerequisites
+
+- Python 3.10+
+- Node.js 16+
+- Docker and Docker Compose
+- Redis server
+- API keys for external services (Adzuna, OpenAI, etc.)
+
+## Installation
+
+### Backend Setup
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd job-ready
+   ```
+
+2. Create a virtual environment:
+   ```bash
+   python -m venv backend/venv
+   source backend/venv/bin/activate  # On Windows: backend\venv\Scripts\activate
+   ```
+
+3. Install backend dependencies:
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
+
+### Frontend Setup
+
+1. Install frontend dependencies:
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+### Microservices Setup
+
+1. Build Docker images for microservices:
+   ```bash
+   docker-compose build
+   ```
+
+## Configuration
+
+### Environment Variables
+
+Create `.env` files in the root directory and in each service directory:
+
+**Root .env:**
 ```bash
-# Run the setup script
-./scripts/dev-setup.sh
+# Copy .env.example to .env and fill in your values
+cp .env.example .env
 ```
 
-### Manual Setup
-1) Prerequisites: Node 18+, npm, Python 3.10+, Docker, Supabase project, Stripe account
-
-2) Copy envs:
+**Frontend .env.development:**
 ```bash
-cp config/example.env config/.env
+# Copy frontend/.env.example to frontend/.env.development and fill in your values
+cp frontend/.env.example frontend/.env.development
 ```
-Fill values for Supabase, Stripe, OpenAI, Redis.
 
-3) Database Setup:
+Required environment variables include:
+- `ADZUNA_APP_ID` and `ADZUNA_APP_KEY` for job search
+- `OPENAI_API_KEY` for AI services
+- `SUPABASE_URL` and `SUPABASE_ANON_KEY` for authentication
+- `STRIPE_SECRET_KEY` for payment processing
+
+## Running the Application
+
+### Development Mode
+
+1. Start Redis:
+   ```bash
+   redis-server
+   ```
+
+2. Start backend services:
+   ```bash
+   cd backend
+   uvicorn app.main:app --reload
+   ```
+
+3. Start frontend:
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+4. Start microservices:
+   ```bash
+   docker-compose up
+   ```
+
+### Production Mode
+
+1. Build and start all services:
+   ```bash
+   docker-compose -f docker-compose.yml up --build
+   ```
+
+## API Documentation
+
+The API is documented using OpenAPI/Swagger:
+
+- **Swagger UI**: `http://localhost:8000/docs`
+- **ReDoc**: `http://localhost:8000/redoc`
+- **OpenAPI JSON**: `http://localhost:8000/openapi.json`
+
+### Key Endpoints
+
+- `GET /jobs/search` - Search for jobs
+- `POST /ai/skill-gap/analyze` - Analyze skill gaps
+- `POST /ai/resume-builder/generate` - Generate resumes
+- `POST /ai/interview-coach/generate-questions` - Generate interview questions
+- `GET /health` - Health check endpoint
+
+## Testing
+
+### Backend Testing
+
+Run backend tests:
 ```bash
-# Run in Supabase SQL editor or local PostgreSQL
-psql -f scripts/setup-db.sql
+cd backend
+python -m pytest
 ```
 
-4) Start services:
+### Frontend Testing
+
+Run frontend tests:
 ```bash
-# Redis
-docker compose up -d redis
-
-# Frontend
-cd frontend && npm install && npm run dev
-
-# Backend API
-cd backend && python -m venv .venv && source .venv/bin/activate && pip install -e . && uvicorn app.main:app --reload
-
-# Workers (BullMQ)
-cd backend/workers && npm install && npm run start:dev
-
-# Microservices (in separate terminals)
-cd microservices/resume_parser && pip install -r requirements.txt && uvicorn main:app --reload --port 8101
-cd microservices/cover_letter_generator && pip install -r requirements.txt && uvicorn main:app --reload --port 8103
-cd microservices/job_matcher && pip install -r requirements.txt && uvicorn main:app --reload --port 8102
-cd microservices/resume_scorer && pip install -r requirements.txt && uvicorn main:app --reload --port 8104
+cd frontend
+npm test
 ```
 
-5) Chrome Extension
-- Load `chrome_extension` as an unpacked extension in Chrome (Developer Mode).
+### Integration Testing
 
-### Testing
+Run integration tests with TestSprite:
 ```bash
-cd frontend && npm test
+# Run TestSprite tests
+testsprite run
 ```
 
-## Environment Variables (config/.env)
-- SUPABASE_URL=
-- SUPABASE_ANON_KEY=
-- SUPABASE_SERVICE_ROLE=
-- SUPABASE_STORAGE_BUCKET=resumes
-- DATABASE_URL=postgresql://...  (if needed for local dev)
-- STRIPE_SECRET_KEY=
-- STRIPE_WEBHOOK_SECRET=
-- OPENAI_API_KEY=
-- REDIS_URL=redis://localhost:6379
-- JWT_SECRET=
-- APP_URL=http://localhost:3000
-- API_URL=http://localhost:8000
+## Deployment
 
-## Database Schema (Supabase)
-See `config/schema.sql` and `config/rls.sql` for tables and RLS policies.
+### Docker Deployment
 
-## Scripts
-See `scripts/` for helper scripts to run and seed services.
+1. Build and push Docker images:
+   ```bash
+   docker-compose build
+   docker-compose push
+   ```
 
-## New AI Microservices (Q-V)
+2. Deploy to your preferred platform:
+   ```bash
+   docker-compose up -d
+   ```
 
-### Q. Application Tailor-on-the-Fly
-- Real-time resume & cover letter rewriting matched to specific job descriptions
-- Integrated with existing ATS Optimizer
-- API: `POST /api/ai/tailor-application`
+### Kubernetes Deployment
 
-### R. Mock Interview Simulator  
-- Interactive Q&A with adaptive difficulty
-- Session history stored in Supabase
-- API: `POST /api/ai/mock-interview`
+Kubernetes manifests are available in the `k8s/` directory.
 
-### S. Gap-to-Job Bridge
-- Narrative generator to explain employment gaps
-- User-generated gap narratives saved in DB
-- API: `POST /api/ai/gap-narrative`
+### Cloud Deployment
 
-### T. Portfolio Project Generator
-- Generate project ideas & starter code repos
-- GitHub integration for repository creation
-- API: `POST /api/ai/portfolio-project`
+The application can be deployed to major cloud platforms:
+- AWS with ECS/EKS
+- Google Cloud with GKE
+- Azure with AKS
 
-### U. Personal Website/Portfolio Generator
-- Auto-generate personal websites (Next.js + Vercel)
-- Template-based with customization options
-- API: `POST /api/ai/personal-website`
+## Contributing
 
-### V. Bulk Apply Orchestrator
-- Queue-based bulk job applications using Playwright
-- Ethical guardrails (pause, confirm before submission)
-- API: `POST /api/ai/bulk-apply`
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-## Billing Plans
-- **Free**: Limited Q+R usage (5 applications, 5 cover letters, 20 AI requests)
-- **Pro**: Full Q+R+S+T+U access (50 applications, 50 cover letters, 200 AI requests)  
-- **Premium**: Everything + Bulk Apply (unlimited usage)
+### Code Style
 
-## Notes
-- This scaffold assumes a hosted Supabase project. For local Postgres+Supabase Studio, use Supabase CLI or Docker setup separately.
-- All services are TypeScript/Python with strict linting recommended.
-- AI microservices include Jest test scaffolding for comprehensive testing.
+- Backend: Follow PEP 8 guidelines
+- Frontend: Use ESLint and Prettier configurations
+- Documentation: Write clear, concise documentation
 
+### Development Workflow
 
+1. Create an issue describing the feature or bug fix
+2. Assign yourself to the issue
+3. Create a branch with a descriptive name
+4. Make changes and commit with clear messages
+5. Submit a pull request for review
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+*For support, contact [support@mybrand.com](mailto:support@mybrand.com)*

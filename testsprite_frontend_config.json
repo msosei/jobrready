@@ -1,0 +1,76 @@
+{
+  "name": "MyBrand Frontend Tests",
+  "description": "Frontend testing configuration for MyBrand Job Application Platform",
+  "tests": [
+    {
+      "name": "Frontend Home Page Load",
+      "type": "http",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5174/",
+        "timeout": 10000
+      },
+      "assertions": [
+        {
+          "type": "status",
+          "value": 200
+        },
+        {
+          "type": "header",
+          "property": "content-type",
+          "value": "text/html"
+        }
+      ]
+    },
+    {
+      "name": "Frontend CSS Load",
+      "type": "http",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5174/index.css",
+        "timeout": 5000
+      },
+      "assertions": [
+        {
+          "type": "status",
+          "value": 200
+        },
+        {
+          "type": "header",
+          "property": "content-type",
+          "value": "text/css"
+        }
+      ]
+    },
+    {
+      "name": "Frontend JavaScript Bundle Load",
+      "type": "http",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5174/src/main.tsx",
+        "timeout": 5000
+      },
+      "assertions": [
+        {
+          "type": "status",
+          "value": 200
+        }
+      ]
+    },
+    {
+      "name": "Frontend App Component Load",
+      "type": "http",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5174/src/App.tsx",
+        "timeout": 5000
+      },
+      "assertions": [
+        {
+          "type": "status",
+          "value": 200
+        }
+      ]
+    }
+  ]
+}

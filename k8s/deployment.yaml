@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mybrand-backend
+  labels:
+    app: mybrand-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mybrand-backend
+  template:
+    metadata:
+      labels:
+        app: mybrand-backend
+    spec:
+      containers:
+      - name: backend
+        image: mybrand/backend:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: mybrand-config
+        - secretRef:
+            name: mybrand-secrets
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mybrand-backend-service
+spec:
+  selector:
+    app: mybrand-backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP
